@@ -20,8 +20,7 @@
 | 是否出现过 ~300 秒的等待 | **一次都没有** |
 | 同时段的其它网络请求 | `web fetch failed: TypeError: fetch failed` |
 
-结论：**「300 秒上限被误报」这个初判在你的日志里没有出现**；真正让你丢轮次的是
-**亚秒级的连接级瞬时故障**（复用的 keep-alive 连接已被对端关闭 / 网络抖动），
+结论：真正丢轮次的是**亚秒级的连接级瞬时故障**（复用的 keep-alive 连接已被对端关闭 / 网络抖动），
 以及「provider 重试预算被 6 次连续快速失败耗尽后整轮结束」。
 
 不过「误报」这件事本身是**真实存在**的架构问题，只是触发条件是另一条路径：
@@ -91,7 +90,7 @@ DeepSeek Messages transport failed [transport-guard: timed out after 300.2s of p
 
 它**不与 `dsh-llm-retry` 抢决策**：下游若已决定重试，本插件原样传回且不消耗预算。
 
-> 这是对你症状**最直接**的修复：一次几百毫秒的网络抖动不会再终结整轮对话。
+> 这是**最直接**的修复：一次几百毫秒的网络抖动不会再终结整轮对话。
 
 ---
 
@@ -182,7 +181,7 @@ node forensics/cordis-probe/probe.mjs
 
 ---
 
-## 6. 已知边界（诚实说明）
+## 6. 注意
 
 1. **不会把 ~300 秒的硬上限变长。** undici 的 `headersTimeout` / `bodyTimeout` 不可通过
    DSH 配置调整；要真正放宽只能替换全局 undici dispatcher，而 `dsh-http-proxy` 也在
