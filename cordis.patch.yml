@@ -1,0 +1,18 @@
+# ============================================================================
+# dsh-transport-guard —— DSH bundle patch
+# ============================================================================
+# 这是一个「挂载声明」：DSH 启动时按 bundle 层栈叠加各插件的 patch，本文件把
+# transport-guard 插入 profile 的配置树。
+#
+# 安装方式（推荐，由 DSH 自己解析依赖并落盘）：
+#   dsh plugin --profile desktop add link:<本目录绝对路径>
+# 或从 npm：
+#   dsh plugin --profile desktop add dsh-transport-guard
+#
+# 本插件不依赖任何其他插件，也不等待任何服务（apply() 立刻注册监听器），
+# 因此这里的 insert 不需要 config；要调参请另加一条 id 定位的 patch 条目。
+# ============================================================================
+
+- insert:
+    - id: dsh-transport-guard
+      name: dsh-transport-guard

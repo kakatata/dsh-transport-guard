@@ -1,0 +1,10 @@
+# 依赖 / vendor 副本：cordis-probe 需要真实 DSH 安装才能取出，见 forensics/README.md
+node_modules/
+
+# 会话日志的明文解码副本（含个人提问与模型输出，绝不提交）
+forensics/sessions/
+
+# 杂项
+*.log
+.DS_Store
+Thumbs.db
